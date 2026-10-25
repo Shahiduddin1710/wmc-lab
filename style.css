@@ -1,0 +1,510 @@
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg:       #ffffff;
+  --text:     #111111;
+  --muted:    #444444;
+  --border:   #cccccc;
+  --accent:   #1a1a2e;
+  --accent2:  #e63946;
+  --code-bg:  #0f111a;
+  --code-text:#a6accd;
+  --nav-h:    56px;
+}
+
+/* ── BASE ── */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/* ────────────────────────────────────────────────
+   NAVBAR
+──────────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--accent);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+/* Brand */
+.navbar-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  font-family: 'Courier New', monospace;
+}
+
+.brand-wt    { color: var(--accent2); }
+.brand-study { color: #b0b8d8; font-weight: normal; }
+.brand-notes { color: #ffffff; }
+
+/* Desktop nav links */
+.navbar-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.navbar-links a {
+  color: #b0b8d8;
+  text-decoration: none;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: #ffffff;
+  background: rgba(230, 57, 70, 0.25);
+}
+
+.navbar-links a.active {
+  border-bottom: 2px solid var(--accent2);
+}
+
+/* Hamburger toggle button */
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+}
+
+.navbar-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.navbar-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.navbar-toggle.open span:nth-child(2) { opacity: 0; }
+.navbar-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ────────────────────────────────────────────────
+   MOBILE FULLSCREEN OVERLAY
+──────────────────────────────────────────────── */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--accent);
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.nav-overlay.open { display: flex; }
+
+.nav-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: var(--nav-h);
+  border-bottom: 1px solid #2a2a4a;
+  flex-shrink: 0;
+}
+
+.nav-overlay-close {
+  background: none;
+  border: none;
+  color: #b0b8d8;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.nav-overlay-close:hover { color: #fff; }
+
+.nav-overlay-links {
+  list-style: none;
+  padding: 16px;
+}
+
+.nav-overlay-links li {
+  border-bottom: 1px solid #2a2a4a;
+}
+
+.nav-overlay-links a {
+  display: block;
+  color: #b0b8d8;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+  padding: 14px 12px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-overlay-links a:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+/* ────────────────────────────────────────────────
+   PAGE TITLE — h1 / h2 directly in body
+──────────────────────────────────────────────── */
+body > h1 {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 48px) 40px 0;
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-decoration: underline;
+}
+
+body > h2 {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 40px 32px;
+  font-size: 15px;
+  font-weight: normal;
+  color: var(--muted);
+  text-align: center;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* ────────────────────────────────────────────────
+   MODULE HEADING
+──────────────────────────────────────────────── */
+.module-heading {
+  max-width: 900px;
+  margin: 52px auto 0;
+  padding: 14px 20px;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  border-left: 5px solid var(--accent2);
+  border-radius: 4px;
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+/* ────────────────────────────────────────────────
+   QUESTION BLOCK
+──────────────────────────────────────────────── */
+.question-block {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 40px 40px;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: calc(var(--nav-h) + 20px);
+}
+
+.question-block:last-of-type { border-bottom: none; }
+
+/* Question title text */
+.question-title {
+  font-size: 15.5px;
+  font-weight: bold;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
+/* Badge "Theory | Scenario" — only direct .tag child of question-title */
+.question-title > .tag {
+  display: inline-block;
+  background: var(--accent2);
+  color: #fff !important;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  padding: 2px 9px;
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+/* ────────────────────────────────────────────────
+   SECTION LABEL
+──────────────────────────────────────────────── */
+.section-label {
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 22px;
+  margin-bottom: 8px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-left: 3px solid var(--accent2);
+  padding-left: 8px;
+}
+
+/* ────────────────────────────────────────────────
+   BODY TEXT inside question block
+──────────────────────────────────────────────── */
+.question-block ul,
+.question-block ol {
+  margin-left: 24px;
+  margin-bottom: 10px;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: #222;
+}
+
+.question-block li          { margin-bottom: 4px; }
+.question-block strong      { color: var(--accent); }
+.question-block em          { font-style: italic; }
+
+.question-block p {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.question-block code {
+  font-family: 'Courier New', monospace;
+  background: #eef0f8;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 13.5px;
+  color: var(--accent);
+}
+
+/* ────────────────────────────────────────────────
+   CODE FILE LABEL
+──────────────────────────────────────────────── */
+.code-file-label {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--accent);
+  background: #f0f2f8;
+  border: 1px solid #d0d4e8;
+  border-bottom: none;
+  padding: 6px 14px;
+  border-radius: 6px 6px 0 0;
+  display: inline-block;
+  margin-top: 18px;
+}
+
+/* ────────────────────────────────────────────────
+   CODE CONTAINER + CODEBOX
+──────────────────────────────────────────────── */
+.code-container {
+  position: relative;
+  margin: 8px 0 14px;
+}
+
+.code-container.with-label { margin-top: 0; }
+.code-container.with-label .codebox { border-radius: 0 6px 6px 6px; }
+
+.codebox {
+  display: block;
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  padding: 48px 24px 24px;
+  border-radius: 10px;
+  line-height: 1.65;
+  font-size: 13.5px;
+  white-space: pre;
+  overflow-x: auto;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+  border: 1px solid #1e2132;
+}
+
+/* ── Syntax colors – Material Oceanic ──
+   Scoped to .codebox so they don't bleed into
+   question-title .tag badge etc.             */
+.codebox .kw   { color: #c792ea; }
+.codebox .fn   { color: #82aaff; }
+.codebox .st   { color: #c3e88d; }
+.codebox .cmt  { color: #546e7a; font-style: italic; }
+.codebox .num  { color: #f78c6c; }
+.codebox .op   { color: #89ddff; }
+.codebox .var  { color: #eeffff; }
+.codebox .pp   { color: #ffcb6b; }
+.codebox .inc  { color: #f07178; }
+.codebox .tag  { color: #f07178; }
+.codebox .attr { color: #ffcb6b; }
+.codebox .val  { color: #c3e88d; }
+.codebox .sel  { color: #82aaff; }
+.codebox .prop { color: #89ddff; }
+.codebox .br   { color: #89ddff; }
+.codebox .th   { color: #ffcb6b; }
+
+/* ────────────────────────────────────────────────
+   COPY BUTTON
+──────────────────────────────────────────────── */
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: #1e2132;
+  color: #82aaff;
+  border: 1px solid #89ddff;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: monospace;
+  transition: all 0.25s;
+  z-index: 5;
+}
+
+.copy-btn:hover  { background: #89ddff; color: #0f111a; }
+.copy-btn.copied { background: #c3e88d; color: #0f111a; border-color: #c3e88d; }
+
+/* ────────────────────────────────────────────────
+   OUTPUT BLOCK
+──────────────────────────────────────────────── */
+.output-block {
+  background: #f4f6f9;
+  border-left: 4px solid var(--accent);
+  padding: 12px 16px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13.5px;
+  margin-top: 8px;
+  white-space: pre-wrap;
+  border-radius: 0 6px 6px 0;
+  color: #1a1a2e;
+  line-height: 1.7;
+}
+
+/* ────────────────────────────────────────────────
+   TABLE
+──────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 16px;
+  font-size: 14px;
+}
+
+th {
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 13px;
+}
+
+td {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:nth-child(even) td { background: #f9f9f9; }
+
+/* ────────────────────────────────────────────────
+   FOOTER
+──────────────────────────────────────────────── */
+footer {
+  background: var(--accent);
+  color: #8899bb;
+  text-align: center;
+  padding: 20px 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  margin-top: 60px;
+}
+
+footer span { color: var(--accent2); }
+
+/* ────────────────────────────────────────────────
+   SCROLL TO TOP
+──────────────────────────────────────────────── */
+#scrollTop {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#scrollTop.visible { opacity: 1; }
+
+/* ────────────────────────────────────────────────
+   RESPONSIVE — MOBILE ≤ 768px
+──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar-links  { display: none; }
+  .navbar-toggle { display: flex; }
+
+  body > h1 {
+    padding: calc(var(--nav-h) + 28px) 16px 0;
+    font-size: 20px;
+  }
+
+  body > h2 {
+    padding: 8px 16px 24px;
+    font-size: 13px;
+  }
+
+  .module-heading {
+    margin: 36px 16px 0;
+    font-size: 13.5px;
+  }
+
+  .question-block {
+    padding: 24px 16px 32px;
+  }
+
+  .codebox {
+    font-size: 12px;
+    white-space: pre-wrap;
+  }
+
+  table { font-size: 12px; }
+}

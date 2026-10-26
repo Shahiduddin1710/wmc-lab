@@ -924,6 +924,102 @@ result = calculate(a, cur, op)</div>
   <img src="calc2_result.png" alt="Calculator Result 2" style="max-width:320px;border-radius:10px;margin:8px 0 8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);vertical-align:top;">
 </div>
 
+<!-- ===================== EXP 10 RN ===================== -->
+<div class="module-heading" id="exp10rn">Experiment 10: Calculator App — React Native (Expo Snack)</div>
+
+<div class="question-block">
+  <div class="question-title">Program — React Native Calculator <span class="tag">Code</span></div>
+
+  <div class="section-label">Code:</div>
+  <div class="code-file-label">App.js</div>
+  <div class="code-container with-label">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    <div class="codebox">import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
+const keys = ['C','⌫','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','0','.','='];
+const isOp = k =&gt; ['%','÷','×','−','+'].includes(k);
+
+function calc(x, o, y) {
+  if (o === '÷' &amp;&amp; y === 0) return 'Error';
+  const r = o === '+' ? x + y : o === '−' ? x - y : o === '×' ? x * y : o === '÷' ? x / y : x % y;
+  return String(parseFloat(r.toFixed(8)));
+}
+
+export default function App() {
+  const [cur, setCur] = useState('0');
+  const [a, setA] = useState(0);
+  const [op, setOp] = useState(null);
+  const [fresh, setFresh] = useState(false);
+  const [top, setTop] = useState('');
+
+  const press = k =&gt; {
+    if (/\d/.test(k)) {
+      if (!op &amp;&amp; fresh) setTop('');
+      setCur(fresh || cur === '0' || cur === 'Error' ? k : cur + k); setFresh(false);
+    }
+    else if (k === '.') {
+      if (fresh || cur === 'Error') { if (!op) setTop(''); setCur('0.'); setFresh(false); }
+      else if (!cur.includes('.')) setCur(cur + '.');
+    }
+    else if (k === 'C') { setCur('0'); setOp(null); setFresh(false); setTop(''); }
+    else if (k === '⌫') {
+      if (fresh &amp;&amp; op) return;
+      setCur(cur.length &gt; 1 &amp;&amp; cur !== 'Error' &amp;&amp; !(fresh &amp;&amp; !op) ? cur.slice(0, -1) : '0');
+    }
+    else if (k === '=') {
+      if (op &amp;&amp; !fresh) {
+        setTop(`${a} ${op} ${cur} =`);
+        setCur(calc(a, op, parseFloat(cur))); setOp(null); setFresh(true);
+      }
+    }
+    else if (isOp(k)) {
+      const x = op &amp;&amp; !fresh ? calc(a, op, parseFloat(cur)) : cur;
+      setTop('');
+      if (x === 'Error') { setCur(x); setOp(null); setFresh(true); return; }
+      setCur(x); setA(parseFloat(x)); setOp(k); setFresh(true);
+    }
+  };
+
+  const main = op ? `${a} ${op} ${fresh ? '' : cur}` : cur;
+
+  return (
+    &lt;View style={s.root}&gt;
+      &lt;Text style={s.top} numberOfLines={1}&gt;{top}&lt;/Text&gt;
+      &lt;Text style={s.display} numberOfLines={1} adjustsFontSizeToFit&gt;{main}&lt;/Text&gt;
+      &lt;View style={s.grid}&gt;
+        {keys.map(k =&gt; (
+          &lt;View key={k} style={[s.cell, k === '0' &amp;&amp; { width: '50%' }]}&gt;
+            &lt;TouchableOpacity style={[s.btn, isOp(k) || k === '=' ? s.orange : k === 'C' || k === '⌫' ? s.grey : s.dark]} onPress={() =&gt; press(k)}&gt;
+              &lt;Text style={s.txt}&gt;{k}&lt;/Text&gt;
+            &lt;/TouchableOpacity&gt;
+          &lt;/View&gt;
+        ))}
+      &lt;/View&gt;
+    &lt;/View&gt;
+  );
+}
+
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: '#121212', justifyContent: 'flex-end', paddingTop: 40 },
+  top: { color: '#9e9e9e', fontSize: 24, textAlign: 'right', paddingHorizontal: 20 },
+  display: { color: '#fff', fontSize: 56, textAlign: 'right', paddingHorizontal: 20, paddingBottom: 20 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap' },
+  cell: { width: '25%', padding: 5 },
+  btn: { height: 70, borderRadius: 35, alignItems: 'center', justifyContent: 'center' },
+  txt: { color: '#fff', fontSize: 26 },
+  orange: { backgroundColor: '#FF9800' },
+  grey: { backgroundColor: '#616161' },
+  dark: { backgroundColor: '#333' },
+});</div>
+  </div>
+
+  <div class="section-label">Run it:</div>
+  <p style="margin-top:8px;font-size:14px;">
+    Open <a href="https://snack.expo.dev/?platform=android" target="_blank" style="color:var(--accent);">Expo Snack</a>, paste the code above in <code>App.js</code>, and run on Android.
+  </p>
+</div>
+
 <footer>
   <p>Wireless Mobile Communication &nbsp;|&nbsp; <span>Experiments 1, 2, 7, 8, 10</span> &nbsp;|&nbsp; Complete Solutions</p>
 </footer>
